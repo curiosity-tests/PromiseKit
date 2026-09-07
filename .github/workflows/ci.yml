@@ -92,6 +92,10 @@ jobs:
       shell: sh
       run: |
         git init -q .
+        # actions/checkout does this via set-safe-directory; the shell form must too,
+        # or every git call dies with "fatal: detected dubious ownership" (exit 128).
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        git config --global --add safe.directory '*'
         git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
         git fetch -q --depth 1 origin "+refs/heads/$GITHUB_REF_NAME:refs/remotes/origin/$GITHUB_REF_NAME"
         git checkout -q -B "$GITHUB_REF_NAME" "refs/remotes/origin/$GITHUB_REF_NAME"
@@ -154,6 +158,10 @@ jobs:
       shell: sh
       run: |
         git init -q .
+        # actions/checkout does this via set-safe-directory; the shell form must too,
+        # or every git call dies with "fatal: detected dubious ownership" (exit 128).
+        git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        git config --global --add safe.directory '*'
         git remote add origin "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
         git fetch -q --depth 1 origin "+refs/heads/$GITHUB_REF_NAME:refs/remotes/origin/$GITHUB_REF_NAME"
         git checkout -q -B "$GITHUB_REF_NAME" "refs/remotes/origin/$GITHUB_REF_NAME"
